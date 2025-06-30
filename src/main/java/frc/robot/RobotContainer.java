@@ -6,9 +6,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.wrist.WristSubsystem;
+import frc.robot.util.sim.Mechanisms;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,12 +24,48 @@ import frc.robot.constants.Constants;
  */
 public class RobotContainer {
 
-    CommandXboxController primary;
+    // Pick Your Controller and Comment Out the Ones You Don't Use
+//    CommandXboxController xbox;
+    CommandPS4Controller ps4;
+//    CommandPS5Controller ps5;
+    private final Mechanisms mechanisms;
+    private final ElevatorSubsystem elevator;
+    private final ArmSubsystem arm;
+    private final WristSubsystem wrist;
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
+        ps4 = new CommandPS4Controller(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
+//        xbox = new CommandXboxController(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
+//        ps5 = new CommandPS5Controller(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
+        mechanisms = new Mechanisms();
+        elevator = new ElevatorSubsystem();
+        arm = new ArmSubsystem();
+        wrist = new WristSubsystem();
         configureBindings();
+    }
+
+    public void setPS4Bindings() {
+    }
+
+    public void setXboxBindings() {}
+
+    public void setPS5Bindings() {}
+
+
+    public void updateMechanisms() {
+        mechanisms.publishComponentPoses(
+                elevator.getCurrentPosition(),
+                arm.getCurrentPosition(),
+                wrist.getCurrentPosition(),
+                true);
+        mechanisms.publishComponentPoses(
+                elevator.getTargetPosition(),
+                arm.getTargetPosition(),
+                wrist.getTargetPosition(),
+                false);
+        mechanisms.updateElevatorArmMech(
+                elevator.getCurrentPosition(),
+                arm.getCurrentPosition());
     }
 
     /**
