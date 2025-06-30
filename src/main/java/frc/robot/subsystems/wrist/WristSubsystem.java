@@ -24,7 +24,6 @@ public class WristSubsystem extends SubsystemBase implements SimulatableMechanis
         if (Robot.isSimulation()) {
             PhysicsSim.getInstance().addTalonFX(wristMotor, wristEncoder);
         }
-        wristMotor.setPosition(WristPositions.SAFE.getAngle());
     }
 
     @Override
