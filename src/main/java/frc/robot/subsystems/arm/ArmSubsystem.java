@@ -16,7 +16,8 @@ import frc.robot.util.sim.SimulatableMechanism;
 public class ArmSubsystem extends SubsystemBase implements SimulatableMechanism {
     private final TalonFX armKraken = new TalonFX(ArmConfig.ARM_KRAKEN_ID, Constants.RIO_BUS);
     private final NeutralOut neutralOut = new NeutralOut();
-    private final MotionMagicTorqueCurrentFOC magicRequest = new MotionMagicTorqueCurrentFOC(0).withSlot(0);
+    private final MotionMagicTorqueCurrentFOC magicRequest =
+            new MotionMagicTorqueCurrentFOC(0).withSlot(0);
 
     private final StatusSignal<Angle> armPosition = armKraken.getPosition();
     private final StatusSignal<Double> armTargetPosition = armKraken.getClosedLoopReference();

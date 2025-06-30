@@ -54,4 +54,3 @@ class ElevatorConfig {
     static final double HEIGHT_TOLERANCE = 0.12;
     static final double ELEVATOR_VELOCITY_TOLERANCE = 0.01;
 }
-

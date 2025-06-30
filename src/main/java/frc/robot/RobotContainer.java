@@ -7,7 +7,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
@@ -25,9 +24,7 @@ import frc.robot.util.sim.Mechanisms;
 public class RobotContainer {
 
     // Pick Your Controller and Comment Out the Ones You Don't Use
-//    CommandXboxController xbox;
-    CommandPS4Controller ps4;
-//    CommandPS5Controller ps5;
+    private final CommandPS4Controller ps4;
     private final Mechanisms mechanisms;
     private final ElevatorSubsystem elevator;
     private final ArmSubsystem arm;
@@ -35,22 +32,12 @@ public class RobotContainer {
 
     public RobotContainer() {
         ps4 = new CommandPS4Controller(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
-//        xbox = new CommandXboxController(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
-//        ps5 = new CommandPS5Controller(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
         mechanisms = new Mechanisms();
         elevator = new ElevatorSubsystem();
         arm = new ArmSubsystem();
         wrist = new WristSubsystem();
         configureBindings();
     }
-
-    public void setPS4Bindings() {
-    }
-
-    public void setXboxBindings() {}
-
-    public void setPS5Bindings() {}
-
 
     public void updateMechanisms() {
         mechanisms.publishComponentPoses(
@@ -63,9 +50,7 @@ public class RobotContainer {
                 arm.getTargetPosition(),
                 wrist.getTargetPosition(),
                 false);
-        mechanisms.updateElevatorArmMech(
-                elevator.getCurrentPosition(),
-                arm.getCurrentPosition());
+        mechanisms.updateElevatorArmMech(elevator.getCurrentPosition(), arm.getCurrentPosition());
     }
 
     /**

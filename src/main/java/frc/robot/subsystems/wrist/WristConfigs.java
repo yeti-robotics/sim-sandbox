@@ -49,4 +49,3 @@ class WristConfigs {
                                     .withMagnetOffset(MAGNET_OFFSET)
                                     .withAbsoluteSensorDiscontinuityPoint(0.625));
 }
-

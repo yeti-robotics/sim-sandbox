@@ -17,20 +17,22 @@ import frc.robot.util.sim.SimulatableMechanism;
 
 public class ElevatorSubsystem extends SubsystemBase implements SimulatableMechanism {
     private final TalonFX primaryElevatorMotor = new TalonFX(ElevatorConfig.primaryElevatorMotorID);
-    private final TalonFX secondaryElevatorMotor = new TalonFX(ElevatorConfig.secondaryElevatorMotorID);
+    private final TalonFX secondaryElevatorMotor =
+            new TalonFX(ElevatorConfig.secondaryElevatorMotorID);
     private final DigitalInput magSwitch = new DigitalInput(ElevatorConfig.magSwitchID);
     private final NeutralOut neutralOut = new NeutralOut();
-    private final MotionMagicTorqueCurrentFOC magicRequest = new MotionMagicTorqueCurrentFOC(0).withSlot(0);
+    private final MotionMagicTorqueCurrentFOC magicRequest =
+            new MotionMagicTorqueCurrentFOC(0).withSlot(0);
     private final StatusSignal<Angle> elevatorPosition = primaryElevatorMotor.getPosition();
-    private final StatusSignal<Double> elevatorTargetPosition = primaryElevatorMotor.getClosedLoopReference();
+    private final StatusSignal<Double> elevatorTargetPosition =
+            primaryElevatorMotor.getClosedLoopReference();
 
     public ElevatorSubsystem() {
         primaryElevatorMotor.getConfigurator().apply(ElevatorConfig.primaryTalonFXConfigs);
         secondaryElevatorMotor.getConfigurator().apply(ElevatorConfig.secondaryTalonFXConfigs);
-        secondaryElevatorMotor.setControl(new Follower(ElevatorConfig.primaryElevatorMotorID, true));
-        new Trigger(this::getMagSwitch)
-                .debounce(2)
-                .onTrue(zeroPosition());
+        secondaryElevatorMotor.setControl(
+                new Follower(ElevatorConfig.primaryElevatorMotorID, true));
+        new Trigger(this::getMagSwitch).debounce(2).onTrue(zeroPosition());
 
         primaryElevatorMotor.setPosition(0);
         secondaryElevatorMotor.setPosition(0);
