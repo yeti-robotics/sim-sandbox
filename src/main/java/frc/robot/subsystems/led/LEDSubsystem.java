@@ -100,59 +100,6 @@ public class LEDSubsystem extends SubsystemBase {
         return runOnce(() -> applyPattern(pattern.pattern)).repeatedly().ignoringDisable(true);
     }
 
-//    public Command selectAnimationCommand(Supplier<CoralManipulatorState> getCMS) {
-//        EnumMap<CoralManipulatorState, Command> animationCommands =
-//                new EnumMap<>(CoralManipulatorState.class);
-//        animationCommands.put(CoralManipulatorState.DISABLED, runOnce(this::updateProgress));
-//        for (CoralManipulatorState state :
-//                new CoralManipulatorState[] {
-//                    CoralManipulatorState.L1,
-//                    CoralManipulatorState.L2,
-//                    CoralManipulatorState.L3,
-//                    CoralManipulatorState.L4,
-//                    CoralManipulatorState.SCORE_L1,
-//                    CoralManipulatorState.SCORE_L2,
-//                    CoralManipulatorState.SCORE_L3,
-//                    CoralManipulatorState.SCORE_L4
-//                }) {
-//            if (isRedAlliance()) {
-//                animationCommands.put(state, runPattern(LEDPatterns.RED_ALLIANCE_RSL_BLINK));
-//            } else {
-//                animationCommands.put(state, runPattern(LEDPatterns.YETI_BLUE_PATTERN));
-//            }
-//        }
-//        animationCommands.put(CoralManipulatorState.HP_INTAKE, runPattern(LEDPatterns.WHITE_BLINK));
-//        animationCommands.put(
-//                CoralManipulatorState.GROUND_INTAKE, runPattern(LEDPatterns.WHITE_BLINK));
-//
-//        if (isRedAlliance()) {
-//            animationCommands.put(
-//                    CoralManipulatorState.STOWED,
-//                    runPattern(LEDPatterns.WHITE)
-//                            .withTimeout(2)
-//                            .andThen(runPattern(LEDPatterns.RED_ALLIANCE_RSL_BLINK)));
-//        } else {
-//            animationCommands.put(
-//                    CoralManipulatorState.STOWED,
-//                    runPattern(LEDPatterns.WHITE)
-//                            .withTimeout(2)
-//                            .andThen(runPattern(LEDPatterns.YETI_BLUE_PATTERN)));
-//        }
-//
-//        animationCommands.put(
-//                CoralManipulatorState.ALGAE_HIGH, runPattern(LEDPatterns.ALGAE_COLOR_PATTERN));
-//        animationCommands.put(
-//                CoralManipulatorState.CLIMB, runPattern(LEDPatterns.SCROLLING_RAINBOW));
-//
-//        return new SelectCommand<>(
-//                animationCommands,
-//                () -> {
-//                    CoralManipulatorState state = getCMS.get();
-//                    System.out.println("Current CoralManipulatorState: " + state);
-//                    return state;
-//                });
-//    }
-
     private static boolean isRedAlliance() {
         return DriverStation.getAlliance()
                 .filter(value -> value == DriverStation.Alliance.Red)
