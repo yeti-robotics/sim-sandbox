@@ -14,50 +14,39 @@ class ArmConfig {
     static final double ARM_DEPLOY_LOWER_BOUND = 0;
 
     // Tune to find these!
-    private static final Slot0Configs SLOT_0_CONFIGS =
-            new Slot0Configs()
-                    .withKP(0)
-                    .withKI(0)
-                    .withKD(0)
-                    .withKG(0)
-                    .withKV(0)
-                    .withKA(0)
-                    .withGravityType(GravityTypeValue.Arm_Cosine);
+    private static final Slot0Configs SLOT_0_CONFIGS = new Slot0Configs()
+            .withKP(0)
+            .withKI(0)
+            .withKD(0)
+            .withKG(0)
+            .withKV(0)
+            .withKA(0)
+            .withGravityType(GravityTypeValue.Arm_Cosine);
 
     // Tune to find these!
-    static final MotionMagicConfigs motionMagicConfigs =
-            new MotionMagicConfigs()
-                    .withMotionMagicCruiseVelocity(0)
-                    .withMotionMagicAcceleration(0)
-                    .withMotionMagicJerk(0);
+    static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(0)
+            .withMotionMagicAcceleration(0)
+            .withMotionMagicJerk(0);
 
-    static final TalonFXConfiguration talonFXConfiguration =
-            new TalonFXConfiguration()
-                    .withFeedback(
-                            new FeedbackConfigs()
-                                    .withFeedbackRemoteSensorID(ARM_CANCODER_ID)
-                                    .withFeedbackSensorSource(
-                                            FeedbackSensorSourceValue.FusedCANcoder)
-                                    .withRotorToSensorRatio(Robot.isReal() ? GEAR_RATIO : 1)
-                                    .withSensorToMechanismRatio(Robot.isReal() ? 1 : GEAR_RATIO))
-                    .withMotorOutput(
-                            new MotorOutputConfigs()
-                                    .withInverted(
-                                            Robot.isReal()
-                                                    ? InvertedValue.Clockwise_Positive
-                                                    : InvertedValue.CounterClockwise_Positive)
-                                    .withNeutralMode(NeutralModeValue.Brake))
-                    .withSlot0(SLOT_0_CONFIGS)
-                    .withMotionMagic(motionMagicConfigs);
+    static final TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration()
+            .withFeedback(new FeedbackConfigs()
+                    .withFeedbackRemoteSensorID(ARM_CANCODER_ID)
+                    .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+                    .withRotorToSensorRatio(Robot.isReal() ? GEAR_RATIO : 1)
+                    .withSensorToMechanismRatio(Robot.isReal() ? 1 : GEAR_RATIO))
+            .withMotorOutput(new MotorOutputConfigs()
+                    .withInverted(
+                            Robot.isReal() ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive)
+                    .withNeutralMode(NeutralModeValue.Brake))
+            .withSlot0(SLOT_0_CONFIGS)
+            .withMotionMagic(motionMagicConfigs);
 
-    static final CANcoderConfiguration cancoderConfiguration =
-            new CANcoderConfiguration()
-                    .withMagnetSensor(
-                            new MagnetSensorConfigs()
-                                    .withSensorDirection(
-                                            SensorDirectionValue.CounterClockwise_Positive)
-                                    .withMagnetOffset(MAGNET_OFFSET)
-                                    .withAbsoluteSensorDiscontinuityPoint(0.625));
+    static final CANcoderConfiguration cancoderConfiguration = new CANcoderConfiguration()
+            .withMagnetSensor(new MagnetSensorConfigs()
+                    .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)
+                    .withMagnetOffset(MAGNET_OFFSET)
+                    .withAbsoluteSensorDiscontinuityPoint(0.625));
 
     static final double ANGLE_TOLERANCE = 0.05;
 }

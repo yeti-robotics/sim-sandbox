@@ -1,5 +1,3 @@
 package frc.robot.subsystems.arm;
 
-public enum ArmPosition {
-
-}
+public enum ArmPosition {}

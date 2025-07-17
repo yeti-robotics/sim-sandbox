@@ -41,15 +41,9 @@ public class RobotContainer {
 
     public void updateMechanisms() {
         mechanisms.publishComponentPoses(
-                elevator.getCurrentPosition(),
-                arm.getCurrentPosition(),
-                wrist.getCurrentPosition(),
-                true);
+                elevator.getCurrentPosition(), arm.getCurrentPosition(), wrist.getCurrentPosition(), true);
         mechanisms.publishComponentPoses(
-                elevator.getTargetPosition(),
-                arm.getTargetPosition(),
-                wrist.getTargetPosition(),
-                false);
+                elevator.getTargetPosition(), arm.getTargetPosition(), wrist.getTargetPosition(), false);
         mechanisms.updateElevatorArmMech(elevator.getCurrentPosition(), arm.getCurrentPosition());
     }
 
