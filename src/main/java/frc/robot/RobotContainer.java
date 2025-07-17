@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.util.sim.Mechanisms;
@@ -30,6 +32,7 @@ public class RobotContainer {
     private final ElevatorSubsystem elevator;
     private final ArmSubsystem arm;
     private final WristSubsystem wrist;
+    public CommandSwerveDrivetrain drivetrain;
 
     public RobotContainer() {
         joystick = new CommandJoystick(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
@@ -37,6 +40,7 @@ public class RobotContainer {
         elevator = new ElevatorSubsystem();
         arm = new ArmSubsystem();
         wrist = new WristSubsystem();
+        drivetrain = TunerConstants.createDrivetrain();
         configureBindings();
     }
 
