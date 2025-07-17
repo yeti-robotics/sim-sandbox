@@ -6,6 +6,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,14 +25,14 @@ import frc.robot.util.sim.Mechanisms;
 public class RobotContainer {
 
     // Pick Your Controller and Comment Out the Ones You Don't Use
-    private final CommandPS4Controller ps4;
+    private final CommandJoystick joystick;
     private final Mechanisms mechanisms;
     private final ElevatorSubsystem elevator;
     private final ArmSubsystem arm;
     private final WristSubsystem wrist;
 
     public RobotContainer() {
-        ps4 = new CommandPS4Controller(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
+        joystick = new CommandJoystick(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
         mechanisms = new Mechanisms();
         elevator = new ElevatorSubsystem();
         arm = new ArmSubsystem();
