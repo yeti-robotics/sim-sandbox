@@ -5,9 +5,18 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.swerve.SwerveModule;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
@@ -15,8 +24,14 @@ import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.vision.apriltag.AprilTagPose;
+import frc.robot.subsystems.vision.apriltag.AprilTagSubsystem;
+import frc.robot.subsystems.vision.apriltag.impl.photon.PhotonAprilTagSystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.util.sim.Mechanisms;
+import frc.robot.util.sim.vision.AprilTagSimulator;
+
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,6 +48,63 @@ public class RobotContainer {
     private final ArmSubsystem arm;
     private final WristSubsystem wrist;
     public CommandSwerveDrivetrain drivetrain;
+    private final AprilTagSubsystem[] aprilTagSubsystems;
+
+    Transform3d camTrans1 =
+            new Transform3d(
+                    new Translation3d(
+                            Units.inchesToMeters(-9.5),
+                            Units.inchesToMeters(-8),
+                            Units.inchesToMeters(11)),
+                    new Rotation3d(0, Math.toRadians(-15), Math.toRadians(-90)));
+
+    Transform3d camTrans2 =
+            new Transform3d(
+                    new Translation3d(
+                            Units.inchesToMeters(-9.5),
+                            Units.inchesToMeters(10),
+                            Units.inchesToMeters(11)),
+                    new Rotation3d(0, Math.toRadians(-15), Math.toRadians(90)));
+
+    @Logged(name = "Vision/RadioCam")
+    public final PhotonAprilTagSystem radioCam;
+
+    @Logged(name = "Vision/ScoreCam")
+    public final PhotonAprilTagSystem scoreCam;
+
+    AprilTagSimulator aprilTagCamSim = new AprilTagSimulator();
+
+    final StructPublisher<Pose2d> posePublisher =
+            NetworkTableInstance.getDefault().getStructTopic("/Pose", Pose2d.struct).publish();
+
+    public void updateVision() {
+        for (AprilTagSubsystem aprilTagSubsystem : aprilTagSubsystems) {
+            List<AprilTagPose> aprilTagPoseOpt = aprilTagSubsystem.getEstimatedPose();
+
+            if (!aprilTagPoseOpt.isEmpty() && !drivetrain.isMotionBlur()) {
+                for (AprilTagPose pose : aprilTagPoseOpt) {
+                    if (pose.numTags() > 0) {
+                        drivetrain.addVisionMeasurement(
+                                pose.estimatedRobotPose(),
+                                pose.timestamp(),
+                                pose.standardDeviations());
+                    }
+                }
+            }
+        }
+
+        posePublisher.set(drivetrain.getState().Pose);
+    }
+
+    public void updateVisionSim() {
+        aprilTagCamSim.update(drivetrain.getState().Pose);
+    }
+
+    private final SwerveRequest.FieldCentric drive =
+            new SwerveRequest.FieldCentric()
+                    .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
+                    .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
+                    .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     public RobotContainer() {
         joystick = new CommandJoystick(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
@@ -41,6 +113,12 @@ public class RobotContainer {
         arm = new ArmSubsystem();
         wrist = new WristSubsystem();
         drivetrain = TunerConstants.createDrivetrain();
+
+        radioCam = new PhotonAprilTagSystem("RadioCam", camTrans1, drivetrain);
+        scoreCam = new PhotonAprilTagSystem("ScoreCam", camTrans2, drivetrain);
+
+        aprilTagSubsystems = new AprilTagSubsystem[] {radioCam, scoreCam};
+
         configureBindings();
     }
 
@@ -61,7 +139,22 @@ public class RobotContainer {
      * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
-    private void configureBindings() {}
+    private void configureBindings() {
+        drivetrain.setDefaultCommand(
+                drivetrain.applyRequest(
+                        () ->
+                                drive.withVelocityX(
+                                                -joystick.getY()
+                                                        * TunerConstants.kSpeedAt12Volts
+                                                        .magnitude())
+                                        .withVelocityY(
+                                                -joystick.getX()
+                                                        * TunerConstants.kSpeedAt12Volts
+                                                        .magnitude())
+                                        .withRotationalRate(
+                                                -joystick.getTwist()
+                                                        * TunerConstants.MaFxAngularRate)));
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

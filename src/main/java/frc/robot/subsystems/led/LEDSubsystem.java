@@ -5,11 +5,8 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import java.util.EnumMap;
-import java.util.function.Supplier;
 
 public class LEDSubsystem extends SubsystemBase {
     public AddressableLED ledStrip;
@@ -32,8 +29,7 @@ public class LEDSubsystem extends SubsystemBase {
 
         setDefaultCommand(run(this::updateProgress).ignoringDisable(true));
 
-        new Trigger(DriverStation::isAutonomousEnabled)
-                .onTrue(runPattern(LEDPatterns.AUTO_PATTERN));
+        new Trigger(DriverStation::isAutonomousEnabled).onTrue(runPattern(LEDPatterns.AUTO_PATTERN));
         new Trigger(DriverStation::isTeleopEnabled)
                 .and(LEDSubsystem::isRedAlliance)
                 .onTrue(runPattern(LEDPatterns.RED_ALLIANCE_PATTERN));
@@ -45,8 +41,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void progressIncrement(boolean positive) {
-        currentProgress +=
-                positive ? LEDConstants.PROGRESS_INCREMENT : -LEDConstants.PROGRESS_INCREMENT;
+        currentProgress += positive ? LEDConstants.PROGRESS_INCREMENT : -LEDConstants.PROGRESS_INCREMENT;
         currentProgress = MathUtil.clamp(currentProgress, 0.0, 1.0);
     }
 
@@ -64,8 +59,7 @@ public class LEDSubsystem extends SubsystemBase {
         if (DriverStation.isDisabled()) {
             //            LEDPattern steps = LEDPattern.steps(Map.of(0, ))
             LEDPattern updatedPattern =
-                    LEDPattern.solid(new Color(0, 0, 255))
-                            .mask(LEDPattern.progressMaskLayer(() -> currentProgress));
+                    LEDPattern.solid(new Color(0, 0, 255)).mask(LEDPattern.progressMaskLayer(() -> currentProgress));
 
             run(() -> applyPattern(updatedPattern)).ignoringDisable(true).schedule();
         }
