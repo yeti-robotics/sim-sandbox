@@ -29,6 +29,8 @@ import frc.robot.subsystems.vision.apriltag.AprilTagSubsystem;
 import frc.robot.subsystems.vision.apriltag.impl.photon.PhotonAprilTagSystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.util.sim.Mechanisms;
+import frc.robot.util.sim.vision.AprilTagCamSim;
+import frc.robot.util.sim.vision.AprilTagCamSimBuilder;
 import frc.robot.util.sim.vision.AprilTagSimulator;
 
 import java.util.List;
@@ -116,6 +118,24 @@ public class RobotContainer {
 
         radioCam = new PhotonAprilTagSystem("RadioCam", camTrans1, drivetrain);
         scoreCam = new PhotonAprilTagSystem("ScoreCam", camTrans2, drivetrain);
+
+        if (Robot.isSimulation()) {
+            AprilTagCamSim simCam1 =
+                    AprilTagCamSimBuilder.newCamera()
+                            .withCameraName("RadioCam")
+                            .withTransform(camTrans1)
+                            .build();
+            aprilTagCamSim.addCamera(simCam1);
+            radioCam.setCamera(simCam1.getCam());
+
+            AprilTagCamSim simCam2 =
+                    AprilTagCamSimBuilder.newCamera()
+                            .withCameraName("ScoreCam")
+                            .withTransform(camTrans2)
+                            .build();
+            aprilTagCamSim.addCamera(simCam2);
+            scoreCam.setCamera(simCam2.getCam());
+        }
 
         aprilTagSubsystems = new AprilTagSubsystem[] {radioCam, scoreCam};
 

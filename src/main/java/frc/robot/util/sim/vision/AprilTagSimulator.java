@@ -25,6 +25,7 @@ public class AprilTagSimulator {
 
     public void update(Pose2d pose) {
         visionSim.update(pose);
+        aprilTagCamSims.forEach(AprilTagCamSim::publishSeenTags);
     }
 
     public List<AprilTagCamSim> getAprilTagCamSims() {

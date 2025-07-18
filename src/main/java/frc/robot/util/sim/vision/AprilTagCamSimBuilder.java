@@ -71,7 +71,7 @@ public class AprilTagCamSimBuilder {
         cameraSim.enableDrawWireframe(true);
 
         StructArrayPublisher<Pose3d> pub = NetworkTableInstance.getDefault()
-                .getStructArrayTopic(cameraName + "SeenTags", Pose3d.struct)
+                .getStructArrayTopic("SimCams/" + cameraName + "SeenTags", Pose3d.struct)
                 .publish();
 
         return new AprilTagCamSim(cam, cameraSim, pub, transform);
