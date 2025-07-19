@@ -9,10 +9,6 @@ import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,7 +28,6 @@ import frc.robot.util.sim.Mechanisms;
 import frc.robot.util.sim.vision.AprilTagCamSim;
 import frc.robot.util.sim.vision.AprilTagCamSimBuilder;
 import frc.robot.util.sim.vision.AprilTagSimulator;
-
 import java.util.List;
 
 /**
@@ -52,22 +47,6 @@ public class RobotContainer {
     public CommandSwerveDrivetrain drivetrain;
     private final AprilTagSubsystem[] aprilTagSubsystems;
 
-    Transform3d camTrans1 =
-            new Transform3d(
-                    new Translation3d(
-                            Units.inchesToMeters(-9.5),
-                            Units.inchesToMeters(-8),
-                            Units.inchesToMeters(11)),
-                    new Rotation3d(0, Math.toRadians(-15), Math.toRadians(-90)));
-
-    Transform3d camTrans2 =
-            new Transform3d(
-                    new Translation3d(
-                            Units.inchesToMeters(-9.5),
-                            Units.inchesToMeters(10),
-                            Units.inchesToMeters(11)),
-                    new Rotation3d(0, Math.toRadians(-15), Math.toRadians(90)));
-
     @Logged(name = "Vision/RadioCam")
     public final PhotonAprilTagSystem radioCam;
 
@@ -76,8 +55,9 @@ public class RobotContainer {
 
     AprilTagSimulator aprilTagCamSim = new AprilTagSimulator();
 
-    final StructPublisher<Pose2d> posePublisher =
-            NetworkTableInstance.getDefault().getStructTopic("/Pose", Pose2d.struct).publish();
+    final StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault()
+            .getStructTopic("/Pose", Pose2d.struct)
+            .publish();
 
     public void updateVision() {
         for (AprilTagSubsystem aprilTagSubsystem : aprilTagSubsystems) {
@@ -87,9 +67,7 @@ public class RobotContainer {
                 for (AprilTagPose pose : aprilTagPoseOpt) {
                     if (pose.numTags() > 0) {
                         drivetrain.addVisionMeasurement(
-                                pose.estimatedRobotPose(),
-                                pose.timestamp(),
-                                pose.standardDeviations());
+                                pose.estimatedRobotPose(), pose.timestamp(), pose.standardDeviations());
                     }
                 }
             }
@@ -102,11 +80,10 @@ public class RobotContainer {
         aprilTagCamSim.update(drivetrain.getState().Pose);
     }
 
-    private final SwerveRequest.FieldCentric drive =
-            new SwerveRequest.FieldCentric()
-                    .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
-                    .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
-                    .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
+            .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     public RobotContainer() {
         joystick = new CommandJoystick(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
@@ -116,23 +93,21 @@ public class RobotContainer {
         wrist = new WristSubsystem();
         drivetrain = TunerConstants.createDrivetrain();
 
-        radioCam = new PhotonAprilTagSystem("RadioCam", camTrans1, drivetrain);
-        scoreCam = new PhotonAprilTagSystem("ScoreCam", camTrans2, drivetrain);
+        radioCam = new PhotonAprilTagSystem("RadioCam", Constants.camTrans1, drivetrain);
+        scoreCam = new PhotonAprilTagSystem("ScoreCam", Constants.camTrans2, drivetrain);
 
         if (Robot.isSimulation()) {
-            AprilTagCamSim simCam1 =
-                    AprilTagCamSimBuilder.newCamera()
-                            .withCameraName("RadioCam")
-                            .withTransform(camTrans1)
-                            .build();
+            AprilTagCamSim simCam1 = AprilTagCamSimBuilder.newCamera()
+                    .withCameraName("RadioCam")
+                    .withTransform(Constants.camTrans1)
+                    .build();
             aprilTagCamSim.addCamera(simCam1);
             radioCam.setCamera(simCam1.getCam());
 
-            AprilTagCamSim simCam2 =
-                    AprilTagCamSimBuilder.newCamera()
-                            .withCameraName("ScoreCam")
-                            .withTransform(camTrans2)
-                            .build();
+            AprilTagCamSim simCam2 = AprilTagCamSimBuilder.newCamera()
+                    .withCameraName("ScoreCam")
+                    .withTransform(Constants.camTrans2)
+                    .build();
             aprilTagCamSim.addCamera(simCam2);
             scoreCam.setCamera(simCam2.getCam());
         }
@@ -160,20 +135,10 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        drivetrain.setDefaultCommand(
-                drivetrain.applyRequest(
-                        () ->
-                                drive.withVelocityX(
-                                                -joystick.getY()
-                                                        * TunerConstants.kSpeedAt12Volts
-                                                        .magnitude())
-                                        .withVelocityY(
-                                                -joystick.getX()
-                                                        * TunerConstants.kSpeedAt12Volts
-                                                        .magnitude())
-                                        .withRotationalRate(
-                                                -joystick.getTwist()
-                                                        * TunerConstants.MaFxAngularRate)));
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(
+                () -> drive.withVelocityX(-joystick.getY() * TunerConstants.kSpeedAt12Volts.magnitude())
+                        .withVelocityY(-joystick.getX() * TunerConstants.kSpeedAt12Volts.magnitude())
+                        .withRotationalRate(-joystick.getTwist() * TunerConstants.MaFxAngularRate)));
     }
 
     /**
