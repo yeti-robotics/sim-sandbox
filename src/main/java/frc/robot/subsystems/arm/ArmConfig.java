@@ -2,7 +2,6 @@ package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.*;
-import frc.robot.Robot;
 
 class ArmConfig {
     static final int ARM_KRAKEN_ID = 10;

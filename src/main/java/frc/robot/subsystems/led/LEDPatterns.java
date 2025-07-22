@@ -1,10 +1,10 @@
 package frc.robot.subsystems.led;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.util.Color;
+
+import static edu.wpi.first.units.Units.*;
 
 public enum LEDPatterns {
     YETI_BLUE_PATTERN(LEDPattern.solid(LEDConstants.YETI_BLUE)),

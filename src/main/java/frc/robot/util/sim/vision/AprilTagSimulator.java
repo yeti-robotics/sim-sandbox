@@ -3,9 +3,10 @@ package frc.robot.util.sim.vision;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import org.photonvision.simulation.VisionSystemSim;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.photonvision.simulation.VisionSystemSim;
 
 public class AprilTagSimulator {
     VisionSystemSim visionSim;
