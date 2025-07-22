@@ -14,5 +14,5 @@ then input this url: `https://github.com/Yeti-Robotics/sim-sandbox.git`.
 
 If you do not have a project open, click the `Get from VCS` button.
 
-
+## Setting up the Sim Sandbox
 To get started with this, open [this guide.](https://wiki.yetirobotics.org/books/robot-software/page/simulating-beluga-in-the-sim-sandbox)
