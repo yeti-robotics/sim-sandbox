@@ -86,7 +86,7 @@ public class RobotContainer {
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     public RobotContainer() {
-        joystick = new CommandJoystick(Constants.PRIMARY_XBOX_CONTROLLER_PORT);
+        joystick = new CommandJoystick(Constants.PRIMARY_JOYSTICK_PORT);
         mechanisms = new Mechanisms();
         elevator = new ElevatorSubsystem();
         arm = new ArmSubsystem();
