@@ -336,3 +336,5 @@ bin/
 
 simgui-window.json
 simgui.json
+
+ctre_sim/

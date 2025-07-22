@@ -27,6 +27,9 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        if (Robot.isReal()) {
+            throw new IllegalStateException("This code should not run on a real robot!");
+        }
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
@@ -46,7 +49,8 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-//        robotContainer.updateMechanisms();
+        robotContainer.updateMechanisms();
+        robotContainer.updateVision();
     }
 
     /** This method is called once each time the robot enters Disabled mode. */
@@ -106,5 +110,6 @@ public class Robot extends TimedRobot {
     @Override
     public void simulationPeriodic() {
         PhysicsSim.getInstance().run();
+        robotContainer.updateVisionSim();
     }
 }

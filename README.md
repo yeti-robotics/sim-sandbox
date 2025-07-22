@@ -14,6 +14,5 @@ then input this url: `https://github.com/Yeti-Robotics/sim-sandbox.git`.
 
 If you do not have a project open, click the `Get from VCS` button.
 
-
-Once you have the project downloaded, you can open it in IntelliJ and start coding.
-Make sure you have set up your development environment by following [this guide](https://docs.yetirobotics.org/books/robot-software/page/getting-started-with-robot-development)
+## Setting up the Sim Sandbox
+To get started with this, open [this guide.](https://wiki.yetirobotics.org/books/robot-software/page/simulating-beluga-in-the-sim-sandbox)

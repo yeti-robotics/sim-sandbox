@@ -1,6 +1,5 @@
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -11,7 +10,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Robot;
 import frc.robot.util.sim.PhysicsSim;
 import frc.robot.util.sim.SimulatableMechanism;
 
@@ -21,36 +19,30 @@ public class ElevatorSubsystem extends SubsystemBase implements SimulatableMecha
     private final DigitalInput magSwitch = new DigitalInput(ElevatorConfig.magSwitchID);
     private final NeutralOut neutralOut = new NeutralOut();
     private final MotionMagicTorqueCurrentFOC magicRequest = new MotionMagicTorqueCurrentFOC(0).withSlot(0);
-    private final StatusSignal<Angle> elevatorPosition = primaryElevatorMotor.getPosition();
-    private final StatusSignal<Double> elevatorTargetPosition = primaryElevatorMotor.getClosedLoopReference();
 
     public ElevatorSubsystem() {
         primaryElevatorMotor.getConfigurator().apply(ElevatorConfig.primaryTalonFXConfigs);
         secondaryElevatorMotor.getConfigurator().apply(ElevatorConfig.secondaryTalonFXConfigs);
         secondaryElevatorMotor.setControl(new Follower(ElevatorConfig.primaryElevatorMotorID, true));
-        new Trigger(this::getMagSwitch)
-                .debounce(2)
-                .onTrue(zeroPosition());
+        new Trigger(this::getMagSwitch).debounce(2).onTrue(zeroPosition());
 
         primaryElevatorMotor.setPosition(0);
         secondaryElevatorMotor.setPosition(0);
 
         primaryElevatorMotor.setControl(neutralOut);
 
-        if (Robot.isSimulation()) {
-            PhysicsSim.getInstance().addTalonFX(primaryElevatorMotor);
-            PhysicsSim.getInstance().addTalonFX(secondaryElevatorMotor);
-        }
+        PhysicsSim.getInstance().addTalonFX(primaryElevatorMotor);
+        PhysicsSim.getInstance().addTalonFX(secondaryElevatorMotor);
     }
 
     @Override
     public Angle getCurrentPosition() {
-        return elevatorPosition.getValue();
+        return primaryElevatorMotor.getPosition().getValue();
     }
 
     @Override
     public Angle getTargetPosition() {
-        return Units.Rotations.of(elevatorTargetPosition.getValue());
+        return Units.Rotations.of(primaryElevatorMotor.getClosedLoopReference().getValue());
     }
 
     private Command zeroPosition() {
