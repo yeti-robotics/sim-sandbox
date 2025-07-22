@@ -33,11 +33,10 @@ class ArmConfig {
             .withFeedback(new FeedbackConfigs()
                     .withFeedbackRemoteSensorID(ARM_CANCODER_ID)
                     .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
-                    .withRotorToSensorRatio(Robot.isReal() ? GEAR_RATIO : 1)
-                    .withSensorToMechanismRatio(Robot.isReal() ? 1 : GEAR_RATIO))
+                    .withRotorToSensorRatio(1)
+                    .withSensorToMechanismRatio(GEAR_RATIO))
             .withMotorOutput(new MotorOutputConfigs()
-                    .withInverted(
-                            Robot.isReal() ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive)
+                    .withInverted(InvertedValue.CounterClockwise_Positive)
                     .withNeutralMode(NeutralModeValue.Brake))
             .withSlot0(SLOT_0_CONFIGS)
             .withMotionMagic(motionMagicConfigs);

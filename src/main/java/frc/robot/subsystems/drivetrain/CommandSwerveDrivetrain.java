@@ -147,9 +147,7 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
     public CommandSwerveDrivetrain(
             SwerveDrivetrainConstants drivetrainConstants, SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, modules);
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
+        startSimThread();
         // registerTelemetry(TunerConstants.logger::telemeterize);
 
         {
@@ -191,9 +189,7 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
             double odometryUpdateFrequency,
             SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, odometryUpdateFrequency, modules);
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
+        startSimThread();
     }
 
     /**
@@ -223,9 +219,7 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
                 odometryStandardDeviation,
                 visionStandardDeviation,
                 modules);
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
+        startSimThread();
     }
 
     private boolean isWheelZeroed(CANcoder wheel) {

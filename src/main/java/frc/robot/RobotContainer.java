@@ -96,21 +96,19 @@ public class RobotContainer {
         radioCam = new PhotonAprilTagSystem("RadioCam", Constants.camTrans1, drivetrain);
         scoreCam = new PhotonAprilTagSystem("ScoreCam", Constants.camTrans2, drivetrain);
 
-        if (Robot.isSimulation()) {
-            AprilTagCamSim simCam1 = AprilTagCamSimBuilder.newCamera()
-                    .withCameraName("RadioCam")
-                    .withTransform(Constants.camTrans1)
-                    .build();
-            aprilTagCamSim.addCamera(simCam1);
-            radioCam.setCamera(simCam1.getCam());
+        AprilTagCamSim simCam1 = AprilTagCamSimBuilder.newCamera()
+                .withCameraName("RadioCam")
+                .withTransform(Constants.camTrans1)
+                .build();
+        aprilTagCamSim.addCamera(simCam1);
+        radioCam.setCamera(simCam1.getCam());
 
-            AprilTagCamSim simCam2 = AprilTagCamSimBuilder.newCamera()
-                    .withCameraName("ScoreCam")
-                    .withTransform(Constants.camTrans2)
-                    .build();
-            aprilTagCamSim.addCamera(simCam2);
-            scoreCam.setCamera(simCam2.getCam());
-        }
+        AprilTagCamSim simCam2 = AprilTagCamSimBuilder.newCamera()
+                .withCameraName("ScoreCam")
+                .withTransform(Constants.camTrans2)
+                .build();
+        aprilTagCamSim.addCamera(simCam2);
+        scoreCam.setCamera(simCam2.getCam());
 
         aprilTagSubsystems = new AprilTagSubsystem[] {radioCam, scoreCam};
 

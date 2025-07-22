@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.util.sim.PhysicsSim;
@@ -18,9 +19,8 @@ public class WristSubsystem extends SubsystemBase implements SimulatableMechanis
     public WristSubsystem() {
         wristMotor.getConfigurator().apply(WristConfig.wristMotorConfigs);
         wristEncoder.getConfigurator().apply(WristConfig.wristEncoderConfigs);
-        if (Robot.isSimulation()) {
-            PhysicsSim.getInstance().addTalonFX(wristMotor, wristEncoder);
-        }
+
+        PhysicsSim.getInstance().addTalonFX(wristMotor, wristEncoder);
     }
 
     @Override

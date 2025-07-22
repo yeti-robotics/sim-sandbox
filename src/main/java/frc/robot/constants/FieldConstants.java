@@ -21,15 +21,7 @@ public class FieldConstants {
     public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT;
 
     static {
-        try {
-            if (Robot.isReal()) {
-                APRIL_TAG_FIELD_LAYOUT = new AprilTagFieldLayout("/home/lvuser/deploy/practice_field.json");
-            } else {
-                APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     }
 
     public static final double fieldWidth = APRIL_TAG_FIELD_LAYOUT.getFieldWidth();

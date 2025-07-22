@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
@@ -25,9 +26,7 @@ public class ArmSubsystem extends SubsystemBase implements SimulatableMechanism 
         armEncoder = new CANcoder(ArmConfig.ARM_CANCODER_ID);
         armEncoder.getConfigurator().apply(ArmConfig.cancoderConfiguration);
 
-        if (Robot.isSimulation()) {
-            PhysicsSim.getInstance().addTalonFX(armKraken, armEncoder);
-        }
+        PhysicsSim.getInstance().addTalonFX(armKraken, armEncoder);
     }
 
     @Override

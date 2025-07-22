@@ -32,10 +32,8 @@ public class ElevatorSubsystem extends SubsystemBase implements SimulatableMecha
 
         primaryElevatorMotor.setControl(neutralOut);
 
-        if (Robot.isSimulation()) {
-            PhysicsSim.getInstance().addTalonFX(primaryElevatorMotor);
-            PhysicsSim.getInstance().addTalonFX(secondaryElevatorMotor);
-        }
+        PhysicsSim.getInstance().addTalonFX(primaryElevatorMotor);
+        PhysicsSim.getInstance().addTalonFX(secondaryElevatorMotor);
     }
 
     @Override
