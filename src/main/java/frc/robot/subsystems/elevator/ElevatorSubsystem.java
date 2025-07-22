@@ -21,8 +21,6 @@ public class ElevatorSubsystem extends SubsystemBase implements SimulatableMecha
     private final DigitalInput magSwitch = new DigitalInput(ElevatorConfig.magSwitchID);
     private final NeutralOut neutralOut = new NeutralOut();
     private final MotionMagicTorqueCurrentFOC magicRequest = new MotionMagicTorqueCurrentFOC(0).withSlot(0);
-    private final StatusSignal<Angle> elevatorPosition = primaryElevatorMotor.getPosition();
-    private final StatusSignal<Double> elevatorTargetPosition = primaryElevatorMotor.getClosedLoopReference();
 
     public ElevatorSubsystem() {
         primaryElevatorMotor.getConfigurator().apply(ElevatorConfig.primaryTalonFXConfigs);
@@ -43,12 +41,12 @@ public class ElevatorSubsystem extends SubsystemBase implements SimulatableMecha
 
     @Override
     public Angle getCurrentPosition() {
-        return elevatorPosition.getValue();
+        return primaryElevatorMotor.getPosition().getValue();
     }
 
     @Override
     public Angle getTargetPosition() {
-        return Units.Rotations.of(elevatorTargetPosition.getValue());
+        return Units.Rotations.of(primaryElevatorMotor.getClosedLoopReference().getValue());
     }
 
     private Command zeroPosition() {
