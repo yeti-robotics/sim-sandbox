@@ -11,13 +11,13 @@ import frc.robot.util.sim.PhysicsSim;
 import frc.robot.util.sim.SimulatableMechanism;
 
 public class WristSubsystem extends SubsystemBase implements SimulatableMechanism {
-    private final TalonFX wristMotor = new TalonFX(WristConfigs.WRIST_KRAKEN_ID);
-    private final CANcoder wristEncoder = new CANcoder(WristConfigs.WRIST_CANCODER_ID);
+    private final TalonFX wristMotor = new TalonFX(WristConfig.WRIST_KRAKEN_ID);
+    private final CANcoder wristEncoder = new CANcoder(WristConfig.WRIST_CANCODER_ID);
     private final PositionVoltage motionRequest = new PositionVoltage(0).withSlot(0);
 
     public WristSubsystem() {
-        wristMotor.getConfigurator().apply(WristConfigs.wristMotorConfigs);
-        wristEncoder.getConfigurator().apply(WristConfigs.wristEncoderConfigs);
+        wristMotor.getConfigurator().apply(WristConfig.wristMotorConfigs);
+        wristEncoder.getConfigurator().apply(WristConfig.wristEncoderConfigs);
         if (Robot.isSimulation()) {
             PhysicsSim.getInstance().addTalonFX(wristMotor, wristEncoder);
         }

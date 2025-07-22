@@ -1,14 +1,14 @@
-package frc.robot.subsystems.arm;
+package frc.robot.subsystems.wrist;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 
-public enum ArmPosition {
+public enum WristPosition {
     EXAMPLE_ENUM(0);
 
     private final Angle angle;
 
-    ArmPosition(double height) {
+    WristPosition(double height) {
         this.angle = Units.Rotations.of(height);
     }
 
