@@ -17,14 +17,12 @@ class GrabberConfig {
     static final double HOLD = 0;
     static final double ALGAE_HOLD = 0;
     static final double ALGAE_SHOOT = 0;
-    static final TalonFXConfiguration coralMotorConfig =
-            new TalonFXConfiguration()
-                    .withMotorOutput(
-                            new MotorOutputConfigs()
-                                    .withInverted(InvertedValue.Clockwise_Positive)
-                                    .withNeutralMode(NeutralModeValue.Brake))
-                    .withSlot0(new Slot0Configs().withKV(0).withKA(0))
-                    .withMotionMagic(new MotionMagicConfigs().withMotionMagicAcceleration(0));
+    static final TalonFXConfiguration coralMotorConfig = new TalonFXConfiguration()
+            .withMotorOutput(new MotorOutputConfigs()
+                    .withInverted(InvertedValue.Clockwise_Positive)
+                    .withNeutralMode(NeutralModeValue.Brake))
+            .withSlot0(new Slot0Configs().withKV(0).withKA(0))
+            .withMotionMagic(new MotionMagicConfigs().withMotionMagicAcceleration(0));
 
     static final int GRABBER_CANANDCOLOR = 0;
 }
