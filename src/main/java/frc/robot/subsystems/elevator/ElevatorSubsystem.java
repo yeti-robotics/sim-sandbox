@@ -4,6 +4,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -23,7 +24,7 @@ public class ElevatorSubsystem extends SubsystemBase implements SimulatableMecha
     public ElevatorSubsystem() {
         primaryElevatorMotor.getConfigurator().apply(ElevatorConfig.primaryTalonFXConfigs);
         secondaryElevatorMotor.getConfigurator().apply(ElevatorConfig.secondaryTalonFXConfigs);
-        secondaryElevatorMotor.setControl(new Follower(ElevatorConfig.primaryElevatorMotorID, true));
+        secondaryElevatorMotor.setControl(new Follower(ElevatorConfig.primaryElevatorMotorID, MotorAlignmentValue.Opposed));
         new Trigger(this::getMagSwitch).debounce(2).onTrue(zeroPosition());
 
         primaryElevatorMotor.setPosition(0);
