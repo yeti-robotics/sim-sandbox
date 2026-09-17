@@ -24,7 +24,8 @@ public class ElevatorSubsystem extends SubsystemBase implements SimulatableMecha
     public ElevatorSubsystem() {
         primaryElevatorMotor.getConfigurator().apply(ElevatorConfig.primaryTalonFXConfigs);
         secondaryElevatorMotor.getConfigurator().apply(ElevatorConfig.secondaryTalonFXConfigs);
-        secondaryElevatorMotor.setControl(new Follower(ElevatorConfig.primaryElevatorMotorID, MotorAlignmentValue.Opposed));
+        secondaryElevatorMotor.setControl(
+                new Follower(ElevatorConfig.primaryElevatorMotorID, MotorAlignmentValue.Opposed));
         new Trigger(this::getMagSwitch).debounce(2).onTrue(zeroPosition());
 
         primaryElevatorMotor.setPosition(0);

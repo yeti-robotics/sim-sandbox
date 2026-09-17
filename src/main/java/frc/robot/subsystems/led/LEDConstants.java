@@ -1,9 +1,9 @@
 package frc.robot.subsystems.led;
 
+import static edu.wpi.first.units.Units.Meters;
+
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.util.Color;
-
-import static edu.wpi.first.units.Units.Meters;
 
 public final class LEDConstants {
     public static final int LED_STRIP_PORT = 0;

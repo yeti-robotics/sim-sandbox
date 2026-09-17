@@ -14,6 +14,9 @@ import frc.robot.subsystems.vision.apriltag.AprilTagPose;
 import frc.robot.subsystems.vision.apriltag.AprilTagResults;
 import frc.robot.subsystems.vision.apriltag.AprilTagSubsystem;
 import frc.robot.subsystems.vision.util.AprilTagDetectionHelpers;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -21,10 +24,6 @@ import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class PhotonAprilTagSystem extends SubsystemBase implements AprilTagSubsystem {
     private static final double MAX_LIVE_SECONDS = 5;
